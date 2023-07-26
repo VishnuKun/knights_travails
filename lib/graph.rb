@@ -34,6 +34,8 @@ class Graph
     end
   end
 
+  private
+
   def possible_moves(node, nested_array)
     x = node.location[0]
     y = node.location[1]
