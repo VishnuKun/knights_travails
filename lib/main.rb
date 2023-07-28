@@ -4,4 +4,4 @@ require_relative 'knights_travails'
 puts 'Knights(♞ ) Traivails Initialized'
 # testing
 k = Knight.new
-p k.knight_moves([3, 3], [4, 3])
+k.knight_moves([0, 0], [4, 3])
