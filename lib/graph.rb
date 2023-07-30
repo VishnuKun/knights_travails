@@ -52,8 +52,8 @@ class Graph
     valid_moves = moves.select do |x, y|
       x >= 0 && x < nested_array.length && y >= 0 && y < nested_array[0].length
     end
-    valid_moves.map do |_new_x, _new_y|
-      find_node(x, y)
+    valid_moves.map do |new_x, new_y|
+      find_node(new_x, new_y)
     end
   end
 
