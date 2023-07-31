@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'node'
+require_relative 'square'
 require_relative 'chess_board'
 class Graph
   attr_accessor :nodes
@@ -10,8 +10,15 @@ class Graph
     build_graph(board)
   end
 
-  def add_node(value)
-    @nodes << Node.new(value)
+  def add_square(value)
+    @nodes << Square.new(value)
+  end
+
+  def add_edges(node1, node2)
+    node1.neighbours << node2.coordinate unless node1.neighbours.include?(node2)
+    node2.neighbours << node1.coordinate unless node2.neighbours.include?(node1)
+    node1.neighbours.uniq!
+    node2.neighbours.uniq!
   end
 
   def build_graph(chess_board)
@@ -20,25 +27,22 @@ class Graph
     while row < 8
       column = 0
       while column < 8
-        node = nested_array[row][column]
-        add_node(node)
+        square = nested_array[row][column]
+        add_square(square)
         column += 1
       end
       row += 1
     end
-    nodes.each do |node|
-      pot_moves = possible_moves(node, nested_array)
-      pot_moves.each do |move|
-        node.links << move
-      end
+    nodes.each do |node1|
+      possible_moves(node1).each { |node2| add_edges(node1, node2)}
     end
   end
 
   private
 
-  def possible_moves(node, nested_array)
-    x = node.location[0]
-    y = node.location[1]
+  def possible_moves(square)
+    x = square.coordinate[0]
+    y = square.coordinate[1]
     moves = [
       [x + 2, y + 1],
       [x + 2, y - 1],
@@ -49,17 +53,16 @@ class Graph
       [x + 1, y - 2],
       [x - 1, y - 2]
     ]
-    valid_moves = moves.select do |x, y|
-      x >= 0 && x < nested_array.length && y >= 0 && y < nested_array[0].length
+    valid_moves = moves.select do |move|
+      co_ord_x = move[0]
+      co_ord_y = move[1]
+      co_ord_x.between?(0, 7) && co_ord_y.between?(0, 7) && [co_ord_x, co_ord_y] != square.coordinate
     end
-    valid_moves.map do |new_x, new_y|
-      find_node(new_x, new_y)
-    end
+    
+    valid_moves.map { |co_ord_x, co_ord_y| find_square(co_ord_x, co_ord_y)}
   end
 
-  def find_node(x, y)
-    nodes.find do |node|
-      node.location[0] == x && node.location[1] == y
-    end
+  def find_square(x, y)
+    nodes.find { |square| square.coordinate[0] == x && square.coordinate[1] == y }
   end
 end
