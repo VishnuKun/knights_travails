@@ -17,8 +17,38 @@ class Knight
     source = find_node(x, y, node_array)
     final =  find_node(fin_x, fin_y, node_array)
 
-    p source
-    p final
+    # initialize queue
+    q = Queue.new
+    # visit node and add source node to queue
+    source.visited = true 
+    q << source
+    # BFS until queue.empty?
+    while !q.empty?
+      # pop node from queue for search
+      current = q.pop
+      # loop through neighbours nodes to find final node
+      current.neighbours.each do |neighbour|
+        i = neighbour[0]
+        j = neighbour[1]
+        node = find_node(i, j, node_array)
+        # visit and add neighbours to queue
+        node.visited = true
+        q << node
+        # update its preceding node
+        node.parent = current
+        # break if node == final node
+        if node.coordinate == final.coordinate
+          q.clear
+          break
+        end
+      end
+    end
+    # BFS completed, now trace route
+    # using parents of nodes
+    # start node.parent == null so 
+    # loop until node->prev is null
+    # reverse route bring start to front
+    # output route
   end
 
   private
