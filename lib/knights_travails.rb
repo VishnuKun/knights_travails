@@ -17,45 +17,46 @@ class Knight
     source = find_node(x, y, node_array)
     final =  find_node(fin_x, fin_y, node_array)
 
-    # initialize queue
+    breadth_first_search(source, final, node_array)
+  end
+
+  private
+
+  def breadth_first_search(source, destination, nodes)
     q = Queue.new
-    # visit node and add source node to queue
-    source.visited = true 
+    source.visited = true
     q << source
-    # BFS until queue.empty?
-    while !q.empty?
-      # pop node from queue for search
+    until q.empty?
       current = q.pop
-      # loop through neighbours nodes to find final node
       current.neighbours.each do |neighbour|
         i = neighbour[0]
         j = neighbour[1]
-        node = find_node(i, j, node_array)
-        # visit and add neighbours to queue
+        node = find_node(i, j, nodes)
         node.visited = true
         q << node
-        # update its preceding node
         node.parent = current
-        # break if node == final node
-        if node.coordinate == final.coordinate
+        if node.coordinate == destination.coordinate
           q.clear
           break
         end
       end
     end
-    # BFS completed, now trace route
-    # using parents of nodes
-    # start node.parent == null so 
-    # loop until node->prev is null
-    # reverse route bring start to front
-    # output route
   end
-
-  private
 
   def find_node(x, y, nodes)
     nodes.find do |node|
       node.coordinate[0] == x && node.coordinate[1] == y
     end
+  end
+
+  def route(source, final)
+    path = []
+    current = final
+    while current != source
+      path << current.coordinate
+      current = current.parent
+    end
+    path << source.coordinate
+    path.reverse
   end
 end

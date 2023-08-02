@@ -56,7 +56,7 @@ class Graph
     valid_moves = moves.select do |move|
       co_ord_x = move[0]
       co_ord_y = move[1]
-      co_ord_x.between?(0, 7) && co_ord_y.between?(0, 7) && [co_ord_x, co_ord_y] != square.coordinate
+      co_ord_x.between?(0, 7) && co_ord_y.between?(0, 7) && square.coordinate != [co_ord_x, co_ord_y]
     end
 
     valid_moves.map { |co_ord_x, co_ord_y| find_square(co_ord_x, co_ord_y) }
