@@ -14,11 +14,11 @@ class Knight
     y = source[1]
     fin_x = final[0]
     fin_y = final[1]
-    source_node = find_node(x, y, node_array)
-    final_node = find_node(fin_x, fin_y, node_array)
+    source = find_node(x, y, node_array)
+    final =  find_node(fin_x, fin_y, node_array)
 
-    positive_infinity = Float::INFINITY
-    p graph
+    p source
+    p final
   end
 
   private

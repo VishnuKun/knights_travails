@@ -34,7 +34,7 @@ class Graph
       row += 1
     end
     nodes.each do |node1|
-      possible_moves(node1).each { |node2| add_edges(node1, node2)}
+      possible_moves(node1).each { |node2| add_edges(node1, node2) }
     end
   end
 
@@ -58,8 +58,8 @@ class Graph
       co_ord_y = move[1]
       co_ord_x.between?(0, 7) && co_ord_y.between?(0, 7) && [co_ord_x, co_ord_y] != square.coordinate
     end
-    
-    valid_moves.map { |co_ord_x, co_ord_y| find_square(co_ord_x, co_ord_y)}
+
+    valid_moves.map { |co_ord_x, co_ord_y| find_square(co_ord_x, co_ord_y) }
   end
 
   def find_square(x, y)
