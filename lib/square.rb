@@ -8,6 +8,5 @@ class Square
     @neighbours = []
     @parent = nil
     @visited = false
-    @distance = Float::INFINITY
   end
 end
