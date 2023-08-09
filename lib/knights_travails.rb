@@ -15,9 +15,14 @@ class Knight
     fin_x = final[0]
     fin_y = final[1]
     source = find_node(x, y, node_array)
-    final =  find_node(fin_x, fin_y, node_array)
-
-    breadth_first_search(source, final, node_array)
+    final = find_node(fin_x, fin_y, node_array)
+    find_node(fin_x, fin_y, node_array)
+    path = breadth_first_search(source, final, node_array)
+    # return output path
+    puts "> knight_moves(#{source.coordinate}, #{final.coordinate})"
+    moves = path.length - 1
+    puts "You made it in #{moves} moves! Here's your path :"
+    path.each { |node| p node.coordinate }
   end
 
   private
@@ -29,18 +34,21 @@ class Knight
     until q.empty?
       current = q.pop
       current.neighbours.each do |neighbour|
-        i = neighbour[0]
-        j = neighbour[1]
-        node = find_node(i, j, nodes)
-        node.visited = true
-        q << node
-        node.parent = current
-        if node.coordinate == destination.coordinate
+        if current == destination
           q.clear
           break
         end
+        i = neighbour[0]
+        j = neighbour[1]
+        node = find_node(i, j, nodes)
+        next if node.visited
+
+        node.visited = true
+        q << node
+        node.parent = current if node != source
       end
     end
+    route(source, destination)
   end
 
   def find_node(x, y, nodes)
@@ -49,14 +57,14 @@ class Knight
     end
   end
 
-  def route(source, final)
+  def route(source, destination)
     path = []
-    current = final
+    current = destination
     while current != source
-      path << current.coordinate
+      path.unshift(current)
       current = current.parent
     end
-    path << source.coordinate
-    path.reverse
+    path.unshift(source)
+    path
   end
 end
